@@ -74,7 +74,7 @@ namespace Microsoft.Teams.Apps.Reflect.Web
                     var reply = Activity.CreateMessageActivity();
                     if (response.type == ReflectConstants.SaveFeedBack)
                     {
-                        var name = (turnContext.Activity.From.Name).Split();
+                        var name = (turnContext.Activity.From.Name).Split(",");
                         response.userName = name[0] + ' ' + name[1];
                         response.emailId = await _dbHelper.GetUserEmailId(turnContext);
 
@@ -233,7 +233,7 @@ namespace Microsoft.Teams.Apps.Reflect.Web
                 RecurssionDataRepository recurssionDataRepository = new RecurssionDataRepository(_configuration, _telemetry);
                 QuestionsDataRepository questiondatarepository = new QuestionsDataRepository(_configuration, _telemetry);
                 var response = new UserfeedbackInfo();
-                var name = (turnContext.Activity.From.Name).Split();
+                var name = (turnContext.Activity.From.Name).Split(",");
                 response.userName = name[0] + ' ' + name[1];
                 response.emailId = await _dbHelper.GetUserEmailId(turnContext);
                 var reflectionid = reldata.datajson.ReflectionId;
@@ -338,7 +338,7 @@ namespace Microsoft.Teams.Apps.Reflect.Web
                     case "sendAdaptiveCard":
                         try
                         {
-                            var name = (turnContext.Activity.From.Name).Split();
+                            var name = (turnContext.Activity.From.Name).Split(",");
                             taskInfo.postCreateBy = name[0] + ' ' + name[1];
                             taskInfo.postCreatedByEmail = await _dbHelper.GetUserEmailId(turnContext);
                             taskInfo.channelID = turnContext.Activity.TeamsGetChannelId();
@@ -504,7 +504,7 @@ namespace Microsoft.Teams.Apps.Reflect.Web
                 {
                     if (turnContext.Activity.Conversation.Id != null)
                     {
-                        var replymessageid = turnContext.Activity.Conversation.Id.Split("=");
+                        var replymessageid = turnContext.Activity.Conversation.Id.Split(",");
                         string messageId = replymessageid[1];
                         var confirmcard = _cardHelper.ConfirmationCard(messageId);
 
@@ -534,7 +534,7 @@ namespace Microsoft.Teams.Apps.Reflect.Web
                 }
                 else if (action.CommandId == ReflectConstants.CreateReflect)
                 {
-                    var name = (turnContext.Activity.From.Name).Split();
+                    var name = (turnContext.Activity.From.Name).Split(",");
                     var userName = name[0] + ' ' + name[1];
                     url = this._configuration["BaseUri"] + "/" + userName;
                     var response = new MessagingExtensionActionResponse()
